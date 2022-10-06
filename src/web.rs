@@ -13,6 +13,7 @@ use axum::{
 use serde_json::json;
 use std::{env, net::SocketAddr};
 use tower_http::{
+    cors::{Any, CorsLayer},
     set_header::SetResponseHeaderLayer,
     trace::{DefaultOnResponse, TraceLayer},
     LatencyUnit,
@@ -36,6 +37,20 @@ pub fn build_app_router() -> Router {
             header::SERVER,
             HeaderValue::from_static("httpavonz"),
         ))
+        .layer(
+            CorsLayer::new()
+                .allow_origin(Any)
+                .allow_methods(Any)
+                .allow_headers(Any)
+                .expose_headers([
+                    header::LINK,               // 103
+                    header::CONTENT_RANGE,      // 206
+                    header::LOCATION,           // 301, 302, 303, 305, 307, 308
+                    header::WWW_AUTHENTICATE,   // 401
+                    header::PROXY_AUTHENTICATE, // 407
+                    header::RETRY_AFTER,        // 429
+                ]),
+        )
         .layer(
             TraceLayer::new_for_http().on_response(
                 DefaultOnResponse::new()
