@@ -21,7 +21,7 @@ use tower_http::{
 
 pub fn build_sock_addr() -> SocketAddr {
     // Use "[::]" to listen on both IPv4 (0.0.0.0) and IPv6
-    let srv_host = env::var("ROBO_RADIO_HOST").unwrap_or_else(|_| "127.0.0.1".to_string());
+    let srv_host = env::var("HTTPAVONZ_HOST").unwrap_or_else(|_| "127.0.0.1".to_string());
     let srv_port = env::var("PORT").unwrap_or_else(|_| "8080".to_string());
 
     format!("{}:{}", srv_host, srv_port)

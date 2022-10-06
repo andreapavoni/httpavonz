@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>httpavonz</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="HTTPavonz is a simple service for generating HTTP codes." />
+    <meta name="keywords" content="http, pavonz, status codes" />
+    <meta name="author" content="Andrea 'pavonz' Pavoni" />
+    <meta
+      name="og:title"
+      property="og:title"
+      content="HTTPavonz is a simple service for generating HTTP codes." />
+    <link rel="icon" href="data:," />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+      integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>httpavonz</h1>
+      </header>
+      <div>
+        <p>
+          A simple service for generating different HTTP codes. It's a Rust
+          re-implementation of
+          <a href="https://httpstat.us">https://httpstat.us</a>, built just for
+          fun.
+        </p>
+        <p>
+          It's useful for testing how your own scripts deal with varying
+          responses.
+        </p>
+        <h2>How it works</h2>
+        <p>
+          Just append the status code you want in the URL, like
+          <a href="/200">htt.pavonz.com/200</a> and it'll return a response like
+          the following:
+        </p>
+        <pre><code>
+HTTP/1.1 [code] [description]
+Content-Type: [text/plain or application/json]
+[other response headers]
+[code] [description]
+        </code></pre>
+
+        <h2>Supported status codes</h2>
+        <ul>
+          <li><a href="/100">100</a> - <i>Continue</i></li>
+          <li><a href="/101">101</a> - <i>Switching Protocols</i></li>
+          <li><a href="/102">102</a> - <i>Processing</i></li>
+          <li><a href="/103">103</a> - <i>Early Hints</i></li>
+          <li><a href="/200">200</a> - <i>OK</i></li>
+          <li><a href="/201">201</a> - <i>Created</i></li>
+          <li><a href="/202">202</a> - <i>Accepted</i></li>
+          <li><a href="/203">203</a> - <i>Non-Authoritative Information</i></li>
+          <li><a href="/204">204</a> - <i>No Content</i></li>
+          <li><a href="/205">205</a> - <i>Reset Content</i></li>
+          <li><a href="/206">206</a> - <i>Partial Content</i></li>
+          <li><a href="/207">207</a></li>
+          <li><a href="/208">208</a> - <i>Already Reported</i></li>
+          <li><a href="/226">226</a></li>
+          <li><a href="/300">300</a> - <i>Multiple Choices</i></li>
+          <li><a href="/301">301</a> - <i>Moved Permanently</i></li>
+          <li><a href="/302">302</a> - <i>Found</i></li>
+          <li><a href="/303">303</a> - <i>See Other</i></li>
+          <li><a href="/304">304</a> - <i>Not Modified</i></li>
+          <li><a href="/305">305</a> - <i>Use Proxy</i></li>
+          <li><a href="/306">306</a> - <i>Switch Proxy</i></li>
+          <li><a href="/307">307</a> - <i>Temporary Redirect</i></li>
+          <li><a href="/308">308</a> - <i>Permanent Redirect</i></li>
+          <li><a href="/400">400</a> - <i>Bad Request</i></li>
+          <li><a href="/401">401</a> - <i>Unauthorized</i></li>
+          <li><a href="/402">402</a> - <i>Payment Required</i></li>
+          <li><a href="/403">403</a> - <i>Forbidden</i></li>
+          <li><a href="/404">404</a> - <i>Not Found</i></li>
+          <li><a href="/405">405</a> - <i>Method Not Allowed</i></li>
+          <li><a href="/406">406</a> - <i>Not Acceptable</i></li>
+          <li><a href="/407">407</a> - <i>Proxy Authentication Required</i></li>
+          <li><a href="/408">408</a> - <i>Request Timeout</i></li>
+          <li><a href="/409">409</a> - <i>Conflict</i></li>
+          <li><a href="/410">410</a> - <i>Gone</i></li>
+          <li><a href="/411">411</a> - <i>Length Required</i></li>
+          <li><a href="/412">412</a> - <i>Precondition Failed</i></li>
+          <li><a href="/413">413</a> - <i>Request Entity Too Large</i></li>
+          <li><a href="/414">414</a> - <i>Request-URI Too Long</i></li>
+          <li><a href="/415">415</a> - <i>Unsupported Media Type</i></li>
+          <li>
+            <a href="/416">416</a> - <i>Requested Range Not Satisfiable</i>
+          </li>
+          <li><a href="/417">417</a> - <i>Expectation Failed</i></li>
+          <li><a href="/418">418</a></li>
+          <li><a href="/421">421</a> - <i>Misdirected Request</i></li>
+          <li><a href="/422">422</a> - <i>Unprocessable Entity</i></li>
+          <li><a href="/423">423</a> - <i>Locked</i></li>
+          <li><a href="/425">425</a> - <i>Too Early</i></li>
+          <li><a href="/426">426</a> - <i>Upgrade Required</i></li>
+          <li><a href="/428">428</a> - <i>Precondition Required</i></li>
+          <li><a href="/429">429</a> - <i>Too Many Requests</i></li>
+          <li>
+            <a href="/431">431</a> - <i>Request Header Fields Too Large</i>
+          </li>
+          <li><a href="/451">451</a> - <i>Unavailable For Legal Reasons</i></li>
+          <li><a href="/500">500</a> - <i>Internal Server Error</i></li>
+          <li><a href="/501">501</a> - <i>Not Implemented</i></li>
+          <li><a href="/502">502</a> - <i>Bad Gateway</i></li>
+          <li><a href="/503">503</a> - <i>Service Unavailable</i></li>
+          <li><a href="/504">504</a> - <i>Gateway Timeout</i></li>
+          <li><a href="/505">505</a> - <i>HTTP Version Not Supported</i></li>
+          <li><a href="/506">506</a> - <i>Variant Also Negotiates</i></li>
+          <li><a href="/507">507</a> - <i>Insufficient Storage</i></li>
+          <li><a href="/508">508</a></li>
+          <li><a href="/510">510</a></li>
+          <li>
+            <a href="/511">511</a> - <i>Network Authentication Required</i>
+          </li>
+          <li>
+            <a href="/520">520</a> - <i>Web Server Returned an Unknown Error</i>
+          </li>
+          <li><a href="/521">521</a> - <i>Web Server Is Down</i></li>
+          <li><a href="/522">522</a> - <i>Connection Timed out</i></li>
+          <li><a href="/523">523</a> - <i>Origin Is Unreachable</i></li>
+          <li><a href="/524">524</a> - <i>A Timeout Occurred</i></li>
+          <li><a href="/525">525</a> - <i>SSL Handshake Failed</i></li>
+          <li><a href="/526">526</a> - <i>Invalid SSL Certificate</i></li>
+          <li><a href="/527">527</a> - <i>Railgun Error</i></li>
+          <li><a href="/530">530</a> -</li>
+        </ul>
+
+        <h2>Other features</h2>
+        <h4>JSON responses</h4>
+        <p>
+          To get a JSON response back, you need to set
+          <code>Accept</code> header to <code>application/json</code>. Then
+          it'll JSON encode the response and send the
+          <code>Content-Type</code> header accordingly.
+        </p>
+
+        <h4>Delayed replies</h4>
+        <p>
+          If you want a delay on the response add a query string
+          <code>sleep</code> (the time is in ms, max 30 seconds), like this:
+          <a href="/200?sleep=5000">htt.pavonz.com/200?sleep=5000</a>
+        </p>
+
+        <h4>CORS</h4>
+        <p>
+          All endpoints have been configured to allow all origins, headers, and
+          HTTP methods.
+        </p>
+
+        <h4>Unknown codes</h4>
+        <p>
+          If you send any other three digit number that's not in that list,
+          it'll return it too. Or,
+          <a href="https://github.com/andreapavoni/httpavonz">send a PR</a>
+          to add full support for a new code.
+        </p>
+      </div>
+      <hr />
+      <footer>
+        &copy;2022 a <a href="https://pavonz.com">pavonz</a> joint -
+        <a href="https://github.com/andreapavoni/httpavonz">src</a> -
+        <i>No data about the requests you make is captured or stored.</i>
+      </footer>
+    </main>
+  </body>
+</html>
