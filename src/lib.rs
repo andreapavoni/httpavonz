@@ -11,7 +11,7 @@ pub struct HttpStatusResponse<'a> {
 }
 impl HttpStatusResponse<'static> {
     pub fn new(status: u16) -> HttpStatusResponse<'static> {
-        match status.clone() {
+        match status {
             100 => HttpStatusResponse {
                 code: 100,
                 description: "Continue",
