@@ -13,7 +13,6 @@ async fn main() {
         .compact()
         .init();
 
-    // Compose the routes
     let router = web::build_app_router();
     let addr = web::build_sock_addr();
 

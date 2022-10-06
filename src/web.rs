@@ -1,11 +1,16 @@
 use crate::HttpStatusResponse;
 use axum::{
     extract::Path,
-    http::{header, HeaderMap, HeaderValue, StatusCode},
-    response::{Html, IntoResponse, Redirect, Response},
+    headers,
+    http::{
+        header::{self},
+        HeaderMap, HeaderValue, StatusCode,
+    },
+    response::{Html, IntoResponse, Response},
     routing::get,
     Router,
 };
+use serde_json::json;
 use std::{env, net::SocketAddr};
 use tower_http::{
     set_header::SetResponseHeaderLayer,
@@ -45,18 +50,36 @@ async fn index_handler() -> Html<&'static str> {
     Html(std::include_str!("../index.html"))
 }
 
-async fn status_code_handler(Path(code): Path<u16>) -> Response {
-    let status = HttpStatusResponse::new(code);
+async fn status_code_handler(Path(code): Path<u16>, req_headers: HeaderMap) -> Response {
+    let resp = HttpStatusResponse::new(code);
+    let status_code = StatusCode::from_u16(resp.code).unwrap();
+    let mut body = "".to_string();
+    let mut headers = resp.headers.unwrap_or_else(|| HeaderMap::new());
 
-    if let Ok(status_code) = StatusCode::from_u16(status.code) {
-        let body = if let Some(b) = status.body {
-            b.to_string()
-        } else {
-            format!("{} {}", status.code, status.description)
-        };
-
-        let headers = status.headers.unwrap_or_else(|| HeaderMap::new());
+    if resp.exclude_body {
+        headers.insert(
+            header::CONNECTION,
+            headers::HeaderValue::from_str("close").unwrap(),
+        );
         return (status_code, headers, body).into_response();
     }
-    Redirect::to("/").into_response()
+
+    match req_headers.get(header::ACCEPT).map(|hv| hv.as_bytes()) {
+        Some(b"application/json") => {
+            headers.insert(
+                header::CONTENT_TYPE,
+                headers::HeaderValue::from_str("application/json").unwrap(),
+            );
+
+            body = json!({"code": resp.code, "description": resp.description}).to_string();
+        }
+        _ => {
+            body = if let Some(b) = resp.body {
+                b.to_string()
+            } else {
+                format!("{} {}", resp.code, resp.description)
+            };
+        }
+    }
+    (status_code, headers, body).into_response()
 }
