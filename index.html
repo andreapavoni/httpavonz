@@ -41,15 +41,34 @@
         </p>
         <h2>How it works</h2>
         <p>
-          Just append the status code you want in the URL, like
-          <a href="/200">htt.pavonz.com/200</a> and it'll return a response like
+          Just append the status code you want in the URL, for example
+          <a href="/200">htt.pavonz.com/401</a> and it'll return a response like
           the following:
         </p>
         <pre><code>
-HTTP/1.1 [code] [description]
-Content-Type: [text/plain or application/json]
-[other response headers]
-[code] [description]
+$ curl -v "https://htt.pavonz.com/401"
+*   Trying 1.2.3.4:80...
+* Connected to htt.pavonz.com (1.2.3.4) port 80 (#0)
+> GET /401 HTTP/1.1
+> Host: htt.pavonz.com
+> User-Agent: curl/7.79.1
+> Accept: */*
+>
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 401 Unauthorized
+< content-type: text/plain; charset=utf-8
+< www-authenticate: Basic realm="Fake Realm"
+< content-length: 16
+< server: httpavonz
+< access-control-allow-origin: *
+< vary: origin
+< vary: access-control-request-method
+< vary: access-control-request-headers
+< access-control-expose-headers: link,content-range,location,www-authenticate,proxy-authenticate,retry-after
+< date: Fri, 07 Oct 2022 09:48:38 GMT
+<
+* Connection #0 to host htt.pavonz.com left intact
+401 Unauthorized
         </code></pre>
 
         <h2>Supported status codes</h2>
@@ -132,7 +151,7 @@ Content-Type: [text/plain or application/json]
           <li><a href="/525">525</a> - <i>SSL Handshake Failed</i></li>
           <li><a href="/526">526</a> - <i>Invalid SSL Certificate</i></li>
           <li><a href="/527">527</a> - <i>Railgun Error</i></li>
-          <li><a href="/530">530</a> -</li>
+          <li><a href="/530">530</a></li>
         </ul>
 
         <h2>Other features</h2>
@@ -163,6 +182,11 @@ Content-Type: [text/plain or application/json]
           it'll return it too. Or,
           <a href="https://github.com/andreapavoni/httpavonz">send a PR</a>
           to add full support for a new code.
+        </p>
+        <h2>Credits</h2>
+        <p>
+          The authors of <a href="https://httpstat.us">httpstat.us</a> for their
+          brillant idea and execution.
         </p>
       </div>
       <hr />
