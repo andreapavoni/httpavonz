@@ -116,7 +116,7 @@ To get a JSON response back, you need to set `Accept` header to `application/jso
 
 #### Delayed replies
 
-If you want a delay on the response add a query string `sleep` (the time is in ms, max 30 seconds), for example: [https://htt.pavonz.com/200?sleep=5000](/200?sleep=5000)
+If you want a delay on the response add a query string `sleep` (the time is in ms, max 5 minutes), for example: [https://htt.pavonz.com/200?sleep=5000](/200?sleep=5000)
 
 #### CORS
 
