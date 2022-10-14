@@ -1,9 +1,11 @@
+###################### BACKEND BUILD ###########################################
 FROM rust:1.63-bullseye AS backend_build
 
 WORKDIR /app
 COPY . /app
 RUN cargo build --release
 
+###################### RUNTIME IMAGE ###########################################
 FROM debian:bullseye-slim
 
 RUN apt-get update -y \
@@ -12,6 +14,12 @@ RUN apt-get update -y \
   && apt-get clean -y \
   && rm -rf /var/lib/apt/lists/*WORKDIR
 
-COPY --from=backend_build /app/target/release/httpavonz /
+# Run as "app" user
+RUN useradd -ms /bin/bash app
 
-CMD ./httpavonz
+USER app
+WORKDIR /app
+
+COPY --from=backend_build /app/target/release/httpavonz /app/httpavonz
+
+CMD ["./httpavonz"]
