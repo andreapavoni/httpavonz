@@ -9,6 +9,7 @@ pub struct HttpStatusResponse<'a> {
     pub exclude_body: bool,
     pub body: Option<&'a str>,
 }
+
 impl HttpStatusResponse<'static> {
     pub fn new(status: u16) -> HttpStatusResponse<'static> {
         match status {

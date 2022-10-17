@@ -15,11 +15,11 @@ RUN apt-get update -y \
   && rm -rf /var/lib/apt/lists/*WORKDIR
 
 # Run as "app" user
-RUN useradd -ms /bin/bash app
+RUN useradd -d /app -ms /bin/bash app
 
 USER app
 WORKDIR /app
 
 COPY --from=backend_build /app/target/release/httpavonz /app/httpavonz
 
-CMD ["./httpavonz"]
+CMD ["/app/httpavonz"]

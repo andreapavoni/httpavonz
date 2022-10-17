@@ -2,10 +2,7 @@ use crate::HttpStatusResponse;
 use axum::{
     extract::{Path, Query},
     headers,
-    http::{
-        header::{self},
-        HeaderMap, HeaderValue, StatusCode,
-    },
+    http::{header, HeaderMap, HeaderValue, StatusCode},
     response::{Html, IntoResponse, Response},
     routing::get,
     Router,
@@ -71,12 +68,18 @@ async fn status_code_handler(
     req_headers: HeaderMap,
     Query(params): Query<Params>,
 ) -> Response {
+    maybe_sleep(params.sleep).await;
+
     let resp = HttpStatusResponse::new(code);
     let status_code = StatusCode::from_u16(resp.code).unwrap();
-    let mut body = "".to_string();
-    let mut headers = resp.headers.unwrap_or_else(HeaderMap::new);
+    let mut headers = resp.headers.clone().unwrap_or_else(HeaderMap::new);
 
-    if let Some(sleep) = params.sleep {
+    let body = build_response_body(&req_headers, &resp, &mut headers);
+    (status_code, headers, body).into_response()
+}
+
+async fn maybe_sleep(sleep_param: Option<u32>) {
+    if let Some(sleep) = sleep_param {
         let time = if sleep > 0 && sleep < 300000 {
             sleep
         } else {
@@ -85,33 +88,38 @@ async fn status_code_handler(
 
         tokio::time::sleep(Duration::from_millis(time.into())).await;
     }
+}
 
+fn build_response_body(
+    req_headers: &HeaderMap,
+    resp: &HttpStatusResponse,
+    resp_headers: &mut HeaderMap,
+) -> String {
     if resp.exclude_body {
-        headers.insert(
+        resp_headers.insert(
             header::CONNECTION,
             headers::HeaderValue::from_str("close").unwrap(),
         );
-        return (status_code, headers, body).into_response();
+        return "".to_string();
     }
 
     match req_headers.get(header::ACCEPT).map(|hv| hv.as_bytes()) {
         Some(b"application/json") => {
-            headers.insert(
+            resp_headers.insert(
                 header::CONTENT_TYPE,
                 headers::HeaderValue::from_str("application/json").unwrap(),
             );
 
-            body = json!({"code": resp.code, "description": resp.description}).to_string();
+            json!({"code": resp.code, "description": resp.description}).to_string()
         }
         _ => {
-            body = if let Some(b) = resp.body {
+            if let Some(b) = resp.body {
                 b.to_string()
             } else {
                 format!("{} {}", resp.code, resp.description)
-            };
+            }
         }
     }
-    (status_code, headers, body).into_response()
 }
 
 #[derive(Debug, Deserialize)]
