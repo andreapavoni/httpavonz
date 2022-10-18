@@ -21,5 +21,6 @@ USER app
 WORKDIR /app
 
 COPY --from=backend_build /app/target/release/httpavonz /app/httpavonz
+COPY --from=backend_build /app/assets /app/assets
 
 CMD ["/app/httpavonz"]
