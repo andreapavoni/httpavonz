@@ -1,20 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>httpavonz</title>
+    <title>
+      httpavonz - A simple service for generating different HTTP codes
+    </title>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
       content="HTTPavonz is a simple service for generating HTTP codes." />
-    <meta name="keywords" content="http, pavonz, status codes" />
+    <meta name="keywords" content="http, pavonz, status codes, testing" />
     <meta name="author" content="Andrea 'pavonz' Pavoni" />
     <meta
       name="og:title"
       property="og:title"
       content="HTTPavonz is a simple service for generating HTTP codes." />
-    <link rel="icon" href="data:," />
+    <!-- For all browsers -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/assets/images/favicons/32x32.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/assets/images/favicons/16x16.png" />
+    <!-- For Google and Android -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="48x48"
+      href="/assets/images/favicons/48x48.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="/assets/images/favicons/192x192.png" />
+    <!-- For iPad -->
+    <link
+      rel="apple-touch-icon"
+      type="image/png"
+      sizes="167x167"
+      href="/assets/images/favicons/167x167.png" />
+    <!-- For iPhone -->
+    <link
+      rel="apple-touch-icon"
+      type="image/png"
+      sizes="180x180"
+      href="/assets/images/favicons/180x180.png" />
 
     <link
       rel="stylesheet"
@@ -61,10 +96,7 @@ $ curl -v "https://htt.pavonz.com/401"
 < content-length: 16
 < server: httpavonz
 < access-control-allow-origin: *
-< vary: origin
-< vary: access-control-request-method
-< vary: access-control-request-headers
-< access-control-expose-headers: link,content-range,location,www-authenticate,proxy-authenticate,retry-after
+...
 < date: Fri, 07 Oct 2022 09:48:38 GMT
 <
 * Connection #0 to host htt.pavonz.com left intact

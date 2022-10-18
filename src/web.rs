@@ -7,6 +7,7 @@ use axum::{
     routing::get,
     Router,
 };
+use axum_extra::routing::SpaRouter;
 use serde::{de, Deserialize, Deserializer};
 use serde_json::json;
 use std::{env, fmt, net::SocketAddr, str::FromStr, time::Duration};
@@ -31,6 +32,7 @@ pub fn build_app_router() -> Router {
     Router::new()
         .route("/", get(index_handler))
         .route("/:code", get(status_code_handler).post(status_code_handler))
+        .merge(SpaRouter::new("/assets", "assets"))
         .layer(SetResponseHeaderLayer::if_not_present(
             header::SERVER,
             HeaderValue::from_static("httpavonz"),
