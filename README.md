@@ -77,7 +77,7 @@ $ curl -v "https://htt.pavonz.com/401"
 - [415](https://htt.pavonz.com/415) - _Unsupported Media Type_
 - [416](https://htt.pavonz.com/416) - _Requested Range Not Satisfiable_
 - [417](https://htt.pavonz.com/417) - _Expectation Failed_
-- [418](https://htt.pavonz.com/418)
+- [418](https://htt.pavonz.com/418) - _I'm a teapot_
 - [421](https://htt.pavonz.com/421) - _Misdirected Request_
 - [422](https://htt.pavonz.com/422) - _Unprocessable Entity_
 - [423](https://htt.pavonz.com/423) - _Locked_
